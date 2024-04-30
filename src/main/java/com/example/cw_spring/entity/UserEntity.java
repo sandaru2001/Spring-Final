@@ -1,3 +1,4 @@
+/*
 package com.example.cw_spring.entity;
 
 import jakarta.persistence.*;
@@ -62,3 +63,4 @@ public class UserEntity implements UserDetails {
         return true;
     }
 }
+*/

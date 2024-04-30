@@ -1,3 +1,4 @@
+/*
 package com.example.cw_spring.controller;
 
 import com.example.cw_spring.dto.EmployeeDTO;
@@ -118,3 +119,4 @@ public class Employee {
         return employeeService.updateEmployee(employee_code, employeeDTO);
     }
 }
+*/

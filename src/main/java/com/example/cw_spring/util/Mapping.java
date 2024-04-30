@@ -2,10 +2,11 @@ package com.example.cw_spring.util;
 
 import com.example.cw_spring.dto.CustomerDTO;
 import com.example.cw_spring.dto.EmployeeDTO;
+import com.example.cw_spring.dto.SupplierDTO;
 import com.example.cw_spring.dto.UserDTO;
 import com.example.cw_spring.entity.CustomerEntity;
 import com.example.cw_spring.entity.EmployeeEntity;
-import com.example.cw_spring.entity.UserEntity;
+import com.example.cw_spring.entity.SupplierEntity;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -39,7 +40,7 @@ public class Mapping {
         return mapper.map(employees, List.class);
     }
     //UserMapping
-    public UserDTO toUserDTO(UserEntity user) {
+    /*public UserDTO toUserDTO(UserEntity user) {
         return mapper.map(user, UserDTO.class);
     }
     public UserEntity toUser(UserDTO userDTO) {
@@ -47,5 +48,16 @@ public class Mapping {
     }
     public List<UserDTO> toUserDTOList(List<UserEntity> users) {
         return mapper.map(users, List.class);
+    }*/
+
+    //SupplierMapping
+    public SupplierDTO toSupplierDTO(SupplierEntity supplier) {
+        return mapper.map(supplier, SupplierDTO.class);
+    }
+    public SupplierEntity toSupplier(SupplierDTO supplierDTO) {
+        return mapper.map(supplierDTO, SupplierEntity.class);
+    }
+    public List<SupplierDTO> toSupplierDTOList(List<SupplierEntity> suppliers) {
+        return mapper.map(suppliers, List.class);
     }
 }
