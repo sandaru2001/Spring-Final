@@ -8,5 +8,5 @@ import com.example.cw_spring.reqAndres.secure.SignUp;
 public interface AuthenticationService {
     JwtAuthResponse signIn(SignIn signIn);
     JwtAuthResponse signUp(SignUp signUp);
-    JwtAuthResponse signUp(SignUp signUp, EmployeeDTO employeeDTO);
+    JwtAuthResponse refreshToken(String refreshToken);
 }

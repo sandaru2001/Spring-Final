@@ -7,6 +7,7 @@ import com.example.cw_spring.dto.UserDTO;
 import com.example.cw_spring.entity.CustomerEntity;
 import com.example.cw_spring.entity.EmployeeEntity;
 import com.example.cw_spring.entity.SupplierEntity;
+import com.example.cw_spring.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -40,7 +41,7 @@ public class Mapping {
         return mapper.map(employees, List.class);
     }
     //UserMapping
-    /*public UserDTO toUserDTO(UserEntity user) {
+    public UserDTO toUserDTO(UserEntity user) {
         return mapper.map(user, UserDTO.class);
     }
     public UserEntity toUser(UserDTO userDTO) {
@@ -48,7 +49,7 @@ public class Mapping {
     }
     public List<UserDTO> toUserDTOList(List<UserEntity> users) {
         return mapper.map(users, List.class);
-    }*/
+    }
 
     //SupplierMapping
     public SupplierDTO toSupplierDTO(SupplierEntity supplier) {
