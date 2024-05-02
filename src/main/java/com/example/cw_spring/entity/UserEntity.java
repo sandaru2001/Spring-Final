@@ -1,5 +1,6 @@
 package com.example.cw_spring.entity;
 
+import com.example.cw_spring.entity.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,8 +28,11 @@ public class UserEntity implements UserDetails {
     private Role role;
 
     @OneToOne
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "employee_code")
     private EmployeeEntity employee;
+
+    @OneToMany(mappedBy = "userEntity",cascade = CascadeType.ALL)
+    private Set<SaleEntity> sales = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

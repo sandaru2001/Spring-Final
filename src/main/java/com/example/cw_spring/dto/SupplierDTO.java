@@ -1,6 +1,6 @@
 package com.example.cw_spring.dto;
 
-import com.example.cw_spring.entity.Category;
+import com.example.cw_spring.entity.enums.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,5 +1,7 @@
 package com.example.cw_spring.entity;
 
+import com.example.cw_spring.entity.enums.Gender;
+import com.example.cw_spring.entity.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

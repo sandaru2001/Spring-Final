@@ -1,12 +1,16 @@
 package com.example.cw_spring.entity;
 
+import com.example.cw_spring.entity.enums.Gender;
+import com.example.cw_spring.entity.enums.Level;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,4 +36,8 @@ public class CustomerEntity {
     private String contact_no;
     private String email;
     private Timestamp purchase_date_time;
+
+@OneToMany(mappedBy = "customerEntity", cascade = CascadeType.ALL)
+    private List<SaleEntity> sales = new ArrayList<>();
+
 }

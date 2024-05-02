@@ -1,9 +1,8 @@
-/*
 package com.example.cw_spring.controller;
 
 import com.example.cw_spring.dto.EmployeeDTO;
-import com.example.cw_spring.entity.Gender;
-import com.example.cw_spring.entity.Role;
+import com.example.cw_spring.entity.enums.Gender;
+import com.example.cw_spring.entity.enums.Role;
 import com.example.cw_spring.service.EmployeeService;
 import com.example.cw_spring.util.UtilMatters;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -26,7 +26,7 @@ public class Employee {
     public String healthTest() {
         return "Health check passed";
     }
-    @PostMapping("/save")
+    @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public EmployeeDTO saveEmployee(
              @RequestPart("employee_name") String employee_name,
              @RequestPart("employee_profile_pic") String employee_profile_pic,
@@ -118,5 +118,14 @@ public class Employee {
 
         return employeeService.updateEmployee(employee_code, employeeDTO);
     }
+
+    @DeleteMapping("/{employee_code}")
+    public boolean deleteEmployee(@PathVariable ("employee_code")String employee_code) {
+        return employeeService.deleteEmployee(employee_code);
+    }
+
+    @GetMapping
+    public List<EmployeeDTO> getAllEmployee() {
+        return employeeService.getAllEmployee();
+    }
 }
-*/

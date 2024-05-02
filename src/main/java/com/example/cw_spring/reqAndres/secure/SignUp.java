@@ -1,6 +1,6 @@
 package com.example.cw_spring.reqAndres.secure;
 
-import com.example.cw_spring.entity.Role;
+import com.example.cw_spring.entity.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

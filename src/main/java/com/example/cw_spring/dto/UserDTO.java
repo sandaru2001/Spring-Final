@@ -1,6 +1,6 @@
 package com.example.cw_spring.dto;
 
-import com.example.cw_spring.entity.Role;
+import com.example.cw_spring.entity.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
