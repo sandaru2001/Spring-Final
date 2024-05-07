@@ -30,4 +30,7 @@ public class InventoryEntity {
 
     @OneToMany(mappedBy = "inventory_Entity")
     private Set<SaleInventoryEntity> saleInventoryEntity = new HashSet<>();
+
+    @OneToMany(mappedBy = "inventory_Entity")
+    private Set<SupplierInventoryEntity> supplierInventoryEntity = new HashSet<>();
 }

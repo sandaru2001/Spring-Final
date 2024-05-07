@@ -1,8 +1,6 @@
 package com.example.cw_spring.entity;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,13 +8,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Table(name = "supplier_inventory")
+@Entity
 
 public class SupplierInventoryEntity {
+    @Id
     private String supplier_inventory_id;
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "item_code")
-    private InventoryEntity inventoryEntity;
+    private InventoryEntity inventory_Entity;
 
     @ManyToOne
     @JoinColumn(name = "supplier_id")

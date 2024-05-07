@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
@@ -23,6 +24,7 @@ public class Inventory {
 
     @PostMapping("/save")
     public InventoryDTO saveInventory(InventoryDTO inventoryDTO) {
+        inventoryDTO.setItem_code(UUID.randomUUID().toString());
         return inventoryService.saveInventory(inventoryDTO);
     }
 
