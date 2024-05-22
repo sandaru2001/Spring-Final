@@ -1,7 +1,9 @@
 package com.example.cw_spring.service.impl;
 
+import com.example.cw_spring.dto.EmployeeDTO;
 import com.example.cw_spring.dto.UserDTO;
 import com.example.cw_spring.entity.UserEntity;
+import com.example.cw_spring.entity.enums.Role;
 import com.example.cw_spring.repository.UserDAO;
 import com.example.cw_spring.reqAndres.response.JwtAuthResponse;
 import com.example.cw_spring.reqAndres.secure.SignIn;
@@ -9,6 +11,7 @@ import com.example.cw_spring.reqAndres.secure.SignUp;
 import com.example.cw_spring.service.AuthenticationService;
 import com.example.cw_spring.service.JwtService;
 import com.example.cw_spring.util.Mapping;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,6 +31,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+
+    private EntityManager entityManager;
     @Override
     public JwtAuthResponse signIn(SignIn signIn) {
         authenticationManager.authenticate(
@@ -43,7 +48,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public JwtAuthResponse signUp(SignUp signUp) {
+    public JwtAuthResponse signUp(SignUp signUp, EmployeeDTO employeeDTO) {
         UserDTO userDTO = UserDTO.builder()
                 .userId(UUID.randomUUID().toString())
                 .email(signUp.getEmail())
@@ -55,6 +60,27 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return JwtAuthResponse.builder()
                 .token(generateToken)
                 .build();
+    }
+
+    @Override
+    public JwtAuthResponse signUp() {
+        Long rowCount = (Long) entityManager.createNativeQuery("SELECT COUNT(*) FROM users").getSingleResult();
+
+        if (rowCount == null || rowCount == 0) {
+            UserDTO userDTO = UserDTO.builder()
+                    .userId(UUID.randomUUID().toString())
+                    .email("sandaru@gmail.com")
+                    .password(passwordEncoder.encode("1234"))
+                    .role(Role.valueOf("ADMIN"))
+                    .build();
+            UserEntity savedUser = userDAO.save(map.toUser(userDTO));
+            String generateToken = jwtService.generateToken(savedUser);
+            return JwtAuthResponse.builder()
+                    .token(generateToken)
+                    .build();
+        } else {
+            return JwtAuthResponse.builder().token("User table is not empty").build();
+        }
     }
 
     @Override

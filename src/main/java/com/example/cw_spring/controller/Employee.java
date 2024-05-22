@@ -8,6 +8,7 @@ import com.example.cw_spring.util.UtilMatters;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -74,6 +75,7 @@ public class Employee {
     }
 
     @PutMapping(value = "/update",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
     public boolean updateEmployee(
             @RequestPart("employee_code") String employee_code,
             @RequestPart("employee_name") String employee_name,

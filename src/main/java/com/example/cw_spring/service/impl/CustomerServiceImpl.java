@@ -20,8 +20,14 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerDAO customerDAO;
     private final Mapping mapper;
     @Override
-    public CustomerDTO saveCustomer(CustomerDTO customerDTO) {
-        return mapper.toCustomerDTO(customerDAO.save(mapper.toCustomer(customerDTO)));
+    public boolean saveCustomer(CustomerDTO customerDTO) {
+        Optional<CustomerEntity> customer = customerDAO.findByEmail(customerDTO.getEmail());
+        if (customer.isPresent()) {
+            return false;
+        } else {
+            customerDAO.save(mapper.toCustomer(customerDTO));
+            return true;
+        }
     }
 
     @Override
@@ -59,4 +65,39 @@ public class CustomerServiceImpl implements CustomerService {
         return mapper.toCustomerDTOList(customerDAO.findAll());
     }
 
+    @Override
+    public CustomerDTO getSelectCustomer(String email) {
+        Optional<CustomerEntity> customer = customerDAO.findByEmail(email);
+        if (customer.isPresent()) {
+            return mapper.toCustomerDTO(customer.get());
+        } else {
+            throw new RuntimeException("Customer not found");
+        }
+    }
+
+    @Override
+    public List<String> getAllCustomerIds() {
+        return customerDAO.getAllCustomerIds();
+    }
+
+    @Override
+    public String generateNextID() {
+        if (customerDAO.findLastId() == null) {
+            return "C001";
+        }
+        String numeric = customerDAO.findLastId().substring(1);
+        int lastNumber = Integer.parseInt(numeric);
+        int nextNumber = lastNumber + 1;
+        String nextID = "C" + String.format("C%03d", nextNumber);
+        return nextID;
+    }
+
+    @Override
+    public CustomerDTO getCustomer(String id) {
+        Optional<CustomerEntity> customer = customerDAO.findById(id);
+        if (customer.isPresent()) {
+            return mapper.toCustomerDTO(customer.get());
+        }
+        return null;
+    }
 }

@@ -24,10 +24,11 @@ public class Customer {
     }
 
     @PostMapping("/save")
-    public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO) {
-        customerDTO.setCustomer_code(UUID.randomUUID().toString());
+    public boolean saveCustomer(@RequestBody CustomerDTO customerDTO) {
+        customerDTO.setCustomer_code(customerService.generateNextID());
         return customerService.saveCustomer(customerDTO);
     }
+
 
     @PutMapping(value = "/update",consumes = MediaType.APPLICATION_JSON_VALUE)
     public boolean updateCustomer(@RequestBody CustomerDTO customerDTO) {
@@ -39,9 +40,23 @@ public class Customer {
         return customerService.deleteCustomer(id);
     }
 
-    @GetMapping
+    @GetMapping("/getSelectCustomer")
+    public CustomerDTO getSelectCustomer( String email) {
+        return customerService.getSelectCustomer(email);
+    }
+
+    @GetMapping(produces = "application/json")
     public List<CustomerDTO> getAllCustomer() {
         return customerService.getAllCustomer();
+    }
+
+    @GetMapping("/getCustomer/{customer_code}")
+    public CustomerDTO getCustomer(@PathVariable String customer_code) {
+        return customerService.getCustomer(customer_code);
+    }
+    @GetMapping("/getAllCustomerIds")
+    public List<String> getAllCustomerIds() {
+        return customerService.getAllCustomerIds();
     }
 
 }

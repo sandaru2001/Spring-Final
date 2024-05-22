@@ -1,11 +1,17 @@
 package com.example.cw_spring.service.impl;
 
+import com.example.cw_spring.controller.Employee;
 import com.example.cw_spring.dto.EmployeeDTO;
 import com.example.cw_spring.entity.EmployeeEntity;
+import com.example.cw_spring.entity.enums.Role;
 import com.example.cw_spring.repository.EmployeeDAO;
+import com.example.cw_spring.repository.UserDAO;
+import com.example.cw_spring.reqAndres.secure.SignUp;
+import com.example.cw_spring.service.AuthenticationService;
 import com.example.cw_spring.service.EmployeeService;
 import com.example.cw_spring.util.Mapping;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,9 +25,22 @@ import java.util.Optional;
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeDAO employeeDAO;
     private final Mapping mapper;
+    private final AuthenticationService authenticationService;
+    private final UserDAO userDAO;
+    private final PasswordEncoder passwordEncoder;
     @Override
-    public EmployeeDTO saveEmployee(EmployeeDTO employeeDTO) {
-        return mapper.toEmployeeDTO(employeeDAO.save(mapper.toEmployee(employeeDTO)));
+    public boolean saveEmployee(EmployeeDTO employeeDTO, String password) {
+        EmployeeEntity employee = mapper.toEmployee(employeeDTO);
+        EmployeeDTO saveEmployee = mapper.toEmployeeDTO(employeeDAO.save(employee));
+
+        SignUp signUp = new SignUp();
+        signUp.setEmail(saveEmployee.getEmail());
+        signUp.setPassword(password);
+        signUp.setRole(Role.valueOf(String.valueOf(employeeDTO.getAccess_role())));
+
+        authenticationService.signUp(signUp, employeeDTO);
+
+        return saveEmployee != null;
     }
 
     @Override
