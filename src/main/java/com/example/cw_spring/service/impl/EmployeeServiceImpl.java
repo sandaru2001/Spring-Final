@@ -3,6 +3,7 @@ package com.example.cw_spring.service.impl;
 import com.example.cw_spring.controller.Employee;
 import com.example.cw_spring.dto.EmployeeDTO;
 import com.example.cw_spring.entity.EmployeeEntity;
+import com.example.cw_spring.entity.UserEntity;
 import com.example.cw_spring.entity.enums.Role;
 import com.example.cw_spring.repository.EmployeeDAO;
 import com.example.cw_spring.repository.UserDAO;
@@ -10,7 +11,9 @@ import com.example.cw_spring.reqAndres.secure.SignUp;
 import com.example.cw_spring.service.AuthenticationService;
 import com.example.cw_spring.service.EmployeeService;
 import com.example.cw_spring.util.Mapping;
+import com.example.cw_spring.util.UtilMatters;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,12 +46,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         return saveEmployee != null;
     }
 
+
     @Override
-    public boolean updateEmployee(String id, EmployeeDTO employeeDTO) {
+    public boolean updateEmployee(String id, EmployeeDTO employeeDTO, String password) {
         Optional<EmployeeEntity> employee = employeeDAO.findById(id);
+        String email = employee.get().getEmail();
         if (employee.isPresent()) {
             employee.get().setEmployee_name(employeeDTO.getEmployee_name());
-            employee.get().setEmployee_profile_pic(employeeDTO.getEmployee_profile_pic());
+            employee.get().setEmployee_profile_pic(UtilMatters.convertBase64(employeeDTO.getEmployee_profile_pic()));
             employee.get().setGender(employeeDTO.getGender());
             employee.get().setStatus(employeeDTO.getStatus());
             employee.get().setDesignation(employeeDTO.getDesignation());
@@ -65,7 +70,15 @@ public class EmployeeServiceImpl implements EmployeeService {
             employee.get().setEmail(employeeDTO.getEmail());
             employee.get().setIn_case_of_emergency(employeeDTO.getIn_case_of_emergency());
             employee.get().setEmergency_contact_no(employeeDTO.getEmergency_contact_no());
-            return true;
+
+            Optional<UserEntity> user = userDAO.findByEmail(email);
+            if (user.isPresent()) {
+                user.get().setEmail(employeeDTO.getEmail());
+                user.get().setPassword(passwordEncoder.encode(password));
+                user.get().setRole(employeeDTO.getAccess_role());
+            } else {
+                throw new RuntimeException(email + " not found");
+            }
         }
         return false;
     }
@@ -76,8 +89,20 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public boolean deleteEmployee(String id) {
-        employeeDAO.deleteById(id);
-        return true;
+    public boolean deleteEmployee(String email) {
+        Optional<EmployeeEntity> employee = employeeDAO.findByEmail(email);
+        Optional<UserEntity> user = userDAO.findByEmail(email);
+        if (employee.isPresent() && user.isPresent()) {
+            userDAO.delete(user.get());
+            employeeDAO.delete(employee.get());
+            return true;
+        } else {
+            throw new RuntimeException(email + " not found");
+        }
+    }
+
+    @Override
+    public EmployeeDTO getEmployee(String email) {
+        return null;
     }
 }
