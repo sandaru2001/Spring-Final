@@ -50,8 +50,9 @@ public class CustomerServiceImpl implements CustomerService {
             customer.get().setPurchase_date_time(customerDTO.getPurchase_date_time());
 
             return true;
+        }else {
+            throw new RuntimeException("Customer not found");
         }
-        return false;
     }
     @Override
     public boolean deleteCustomer(String id) {
@@ -83,12 +84,12 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public String generateNextID() {
         if (customerDAO.findLastId() == null) {
-            return "C001";
+            return "C0001";
         }
         String numeric = customerDAO.findLastId().substring(1);
         int lastNumber = Integer.parseInt(numeric);
         int nextNumber = lastNumber + 1;
-        String nextID = "C" + String.format("C%03d", nextNumber);
+        String nextID = "C" + String.format("%04d", nextNumber);
         return nextID;
     }
 

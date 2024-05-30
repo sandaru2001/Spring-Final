@@ -27,8 +27,13 @@ public class Employee {
     public String healthTest() {
         return "Health check passed";
     }
+
+    @GetMapping(produces = "application/json")
+    public List<EmployeeDTO> getAllEmployees() {
+        return employeeService.getAllEmployee();
+    }
     @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public EmployeeDTO saveEmployee(
+    public boolean saveEmployee(
              @RequestPart("employee_name") String employee_name,
              @RequestPart("employee_profile_pic") String employee_profile_pic,
              @RequestPart("gender") String gender,
@@ -46,7 +51,8 @@ public class Employee {
              @RequestPart("contact_no") String contact_no,
              @RequestPart("email") String email,
              @RequestPart("in_case_of_emergency") String in_case_of_emergency,
-             @RequestPart("emergency_contact_no") String emergency_contact_no) throws ParseException {
+             @RequestPart("emergency_contact_no") String emergency_contact_no,
+             @RequestPart("password") String password) throws ParseException {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -71,7 +77,7 @@ public class Employee {
         employeeDTO.setEmergency_contact_no(emergency_contact_no);
         employeeDTO.setEmployee_code(UUID.randomUUID().toString());
 
-        return employeeService.saveEmployee(employeeDTO);
+        return employeeService.saveEmployee(employeeDTO, password);
     }
 
     @PutMapping(value = "/update",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -95,7 +101,8 @@ public class Employee {
             @RequestPart("contact_no") String contact_no,
             @RequestPart("email") String email,
             @RequestPart("in_case_of_emergency") String in_case_of_emergency,
-            @RequestPart("emergency_contact_no") String emergency_contact_no) throws ParseException {
+            @RequestPart("emergency_contact_no") String emergency_contact_no,
+            @RequestPart("password") String password) throws ParseException {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         EmployeeDTO employeeDTO = new EmployeeDTO();
@@ -118,16 +125,17 @@ public class Employee {
         employeeDTO.setIn_case_of_emergency(in_case_of_emergency);
         employeeDTO.setEmergency_contact_no(emergency_contact_no);
 
-        return employeeService.updateEmployee(employee_code, employeeDTO);
+        return employeeService.updateEmployee(employee_code, employeeDTO, password);
     }
 
-    @DeleteMapping("/{employee_code}")
-    public boolean deleteEmployee(@PathVariable ("employee_code")String employee_code) {
-        return employeeService.deleteEmployee(employee_code);
+    @DeleteMapping("/delete")
+    @PreAuthorize("hasRole('ADMIN')")
+    public boolean deleteEmployee(String email) {
+        return employeeService.deleteEmployee(email);
     }
 
     @GetMapping
-    public List<EmployeeDTO> getAllEmployee() {
-        return employeeService.getAllEmployee();
+    public EmployeeDTO getEmployee(String email) {
+        return employeeService.getEmployee(email);
     }
 }

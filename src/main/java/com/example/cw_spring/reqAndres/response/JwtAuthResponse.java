@@ -1,5 +1,6 @@
 package com.example.cw_spring.reqAndres.response;
 
+import com.example.cw_spring.entity.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,4 +13,5 @@ import lombok.NoArgsConstructor;
 
 public class JwtAuthResponse {
     private String token;
+    private Role role;
 }

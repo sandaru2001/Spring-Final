@@ -42,9 +42,6 @@ public class Mapping {
     public UserEntity toUser(UserDTO userDTO) {
         return mapper.map(userDTO, UserEntity.class);
     }
-    public List<UserDTO> toUserDTOList(List<UserEntity> users) {
-        return mapper.map(users, List.class);
-    }
 
     //SupplierMapping
     public SupplierDTO toSupplierDTO(SupplierEntity supplier) {

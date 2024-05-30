@@ -5,15 +5,14 @@ import com.example.cw_spring.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/customer")
+@CrossOrigin(origins = "*")
 public class Customer {
     @Autowired
     private CustomerService customerService;
@@ -32,11 +31,12 @@ public class Customer {
 
     @PutMapping(value = "/update",consumes = MediaType.APPLICATION_JSON_VALUE)
     public boolean updateCustomer(@RequestBody CustomerDTO customerDTO) {
+        System.out.println(">>>>>>>>> : "+customerDTO.getCustomer_code());
         return customerService.updateCustomer(customerDTO.getCustomer_code(), customerDTO);
     }
 
-    @DeleteMapping("/{id}")
-    public boolean deleteCustomer(@PathVariable ("id")String id) {
+    @DeleteMapping("/delete")
+    public boolean deleteCustomer(@RequestPart ("customer_code")String id) {
         return customerService.deleteCustomer(id);
     }
 

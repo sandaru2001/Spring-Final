@@ -17,25 +17,26 @@ import java.util.List;
 @Data
 @Table(name = "customer")
 @Entity
-public class CustomerEntity {
+public class CustomerEntity implements SuperEntity{
     @Id
     private String customer_code;
     private String customer_name;
     @Enumerated(EnumType.STRING)
     private Gender gender;
-    private Date join_date;
+    private String join_date;
     @Enumerated(EnumType.STRING)
     private Level level;
-    private Integer total_points;
-    private Date dob;
+    private int total_points;
+    private String  dob;
     private String address_line_01;
     private String address_line_02;
     private String address_line_03;
     private String address_line_04;
     private String address_line_05;
     private String contact_no;
+    @Column(unique = true)
     private String email;
-    private Timestamp purchase_date_time;
+    private String  purchase_date_time;
 
 @OneToMany(mappedBy = "customerEntity", cascade = CascadeType.ALL)
     private List<SaleEntity> sales = new ArrayList<>();

@@ -80,8 +80,8 @@ public class JwtServiceImpl implements JwtService {
     }
 
     private Claims getAllClaims(String token) {
-        log.info(Jwts.parser().setSigningKey(getSignKey()).parseClaimsJws(token).getBody().toString());
-        return Jwts.parser().setSigningKey(getSignKey()).parseClaimsJws(token).getBody();
+//        log.info(Jwts.parser().setSigningKey(getSignKey()).parseClaimsJws(token).getBody().toString());
+        return Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token).getBody();
     }
 
     public Key getSignKey(){

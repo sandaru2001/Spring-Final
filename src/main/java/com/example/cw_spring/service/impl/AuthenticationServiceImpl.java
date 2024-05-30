@@ -12,6 +12,7 @@ import com.example.cw_spring.service.AuthenticationService;
 import com.example.cw_spring.service.JwtService;
 import com.example.cw_spring.util.Mapping;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,6 +33,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
+    @PersistenceContext
     private EntityManager entityManager;
     @Override
     public JwtAuthResponse signIn(SignIn signIn) {
@@ -85,11 +87,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public JwtAuthResponse refreshToken(String refreshToken) {
-        var user = userDAO
-                .findByEmail(jwtService.extractUsername(refreshToken))
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        String username = jwtService.extractUsername(refreshToken);
+        UserEntity user = userDAO.findByEmail(username)
+                .orElseThrow(() -> new RuntimeException("Email not found"));
+        String generateToken = jwtService.generateToken(user);
         return JwtAuthResponse.builder()
-                .token(jwtService.generateToken(user))
+                .token(generateToken)
                 .build();
 
     }

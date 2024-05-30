@@ -24,7 +24,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser(UserDTO user) {
-        map.toUserDTO(userDAO.save(map.toUser(user)));
+    public void saveUser(UserDTO userDTO) {
+        map.toUserDTO(userDAO.save(map.toUser(userDTO)));
     }
+
 }
