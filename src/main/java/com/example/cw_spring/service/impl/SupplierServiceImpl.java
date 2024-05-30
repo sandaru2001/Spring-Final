@@ -20,8 +20,9 @@ public class SupplierServiceImpl implements SupplierService {
     private final SupplierDAO supplierDAO;
     private final Mapping mapping;
     @Override
-    public SupplierDTO saveSupplier(SupplierDTO supplierDTO) {
-        return mapping.toSupplierDTO(supplierDAO.save(mapping.toSupplier(supplierDTO)));
+    public boolean saveSupplier(SupplierDTO supplierDTO) {
+        SupplierEntity supplier = supplierDAO.save(mapping.toSupplier(supplierDTO));
+        return supplier != null;
     }
 
     @Override
@@ -44,6 +45,21 @@ public class SupplierServiceImpl implements SupplierService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public SupplierDTO selectSupplierById(String email) {
+        return null;
+    }
+
+    @Override
+    public String generateNextID() {
+        return null;
+    }
+
+    @Override
+    public List<String> getAllSupplierIds() {
+        return null;
     }
 
     @Override

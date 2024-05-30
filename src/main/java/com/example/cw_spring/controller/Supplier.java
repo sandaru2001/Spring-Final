@@ -22,7 +22,7 @@ public class Supplier {
     }
 
     @PostMapping("/save")
-    public SupplierDTO saveSupplier(@RequestBody SupplierDTO supplierDTO) {
+    public boolean saveSupplier(@RequestBody SupplierDTO supplierDTO) {
         supplierDTO.setSupplier_code(UUID.randomUUID().toString());
         return supplierService.saveSupplier(supplierDTO);
     }
