@@ -1,11 +1,15 @@
 package com.example.cw_spring.entity;
 
+import com.example.cw_spring.entity.enums.InventoryGender;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -21,16 +25,18 @@ public class InventoryEntity {
     @Column(columnDefinition = "LONGTEXT")
     private String item_picture;
     private String category;
-    private int size;
-    private double unit_price_sale;
-    private double unit_price_buy;
-    private double expected_profit;
-    private double profit_margin;
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private InventoryGender gender;
+    private String occupation;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "inventory_Entity")
     private Set<SaleInventoryEntity> saleInventoryEntity = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "inventory_Entity")
     private Set<SupplierInventoryEntity> supplierInventoryEntity = new HashSet<>();
+
+    @OneToMany(mappedBy = "inventory_entity")
+    private List<SizeEntity> sizes = new ArrayList<>();
 }

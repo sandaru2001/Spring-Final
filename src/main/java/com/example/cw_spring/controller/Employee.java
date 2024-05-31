@@ -19,6 +19,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/employee")
+@CrossOrigin(origins = "*")
 public class Employee {
     @Autowired
     private EmployeeService employeeService;

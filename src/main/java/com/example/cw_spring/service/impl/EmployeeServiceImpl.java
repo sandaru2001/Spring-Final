@@ -103,6 +103,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDTO getEmployee(String email) {
-        return null;
+        Optional<EmployeeEntity> employee = employeeDAO.findByEmail(email);
+        if (employee.isPresent()) {
+            return mapper.toEmployeeDTO(employee.get());
+        } else {
+            throw new RuntimeException(email + " not found");
+        }
     }
 }
