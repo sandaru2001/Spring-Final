@@ -17,7 +17,6 @@ import java.util.Set;
 @Data
 @Table(name = "inventory")
 @Entity
-
 public class InventoryEntity {
     @Id
     private String item_code;
@@ -29,14 +28,15 @@ public class InventoryEntity {
     private InventoryGender gender;
     private String occupation;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "inventory_Entity")
-    private Set<SaleInventoryEntity> saleInventoryEntity = new HashSet<>();
+    /*@JsonIgnore
+    @OneToMany(mappedBy = "inventory")
+    private Set<SaleInventoryEntity> saleInventoryEntity = new HashSet<>();*/
+
+    /*@JsonIgnore
+    @OneToMany(mappedBy = "inventory")
+    private Set<SupplierInventoryEntity> supplierInventoryEntity = new HashSet<>();*/
 
     @JsonIgnore
-    @OneToMany(mappedBy = "inventory_Entity")
-    private Set<SupplierInventoryEntity> supplierInventoryEntity = new HashSet<>();
-
-    @OneToMany(mappedBy = "inventory_entity")
+    @OneToMany(mappedBy = "inventory")
     private List<SizeEntity> sizes = new ArrayList<>();
 }
