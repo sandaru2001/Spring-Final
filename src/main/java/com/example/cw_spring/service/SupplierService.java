@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface SupplierService {
     boolean saveSupplier(SupplierDTO supplierDTO);
-    List<SupplierDTO> getAllSupplier();
-    boolean deleteSupplier(String supplier_code);
-    boolean updateSupplier(String supplier_code, SupplierDTO supplierDTO);
-    SupplierDTO selectSupplierById(String email);
+    List<SupplierDTO> getAllSuppliers();
+    boolean deleteSupplierByEmail(String email);
+    boolean updateSupplierById(String supplier_code, SupplierDTO supplierDTO) throws Exception;
+    SupplierDTO selectSupplierByEmail(String email);
     String generateNextID();
     List<String> getAllSupplierIds();
 }

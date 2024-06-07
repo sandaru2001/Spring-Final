@@ -26,50 +26,58 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public boolean updateSupplier(String supplier_code, SupplierDTO supplierDTO) {
-        Optional<SupplierEntity> supplier = supplierDAO.findById(supplier_code);
-        if (supplier.isPresent()) {
-            SupplierEntity supplierEntity = supplier.get();
-            supplierEntity.setSupplier_name(supplierDTO.getSupplier_name());
-            supplierEntity.setCategory(supplierDTO.getCategory());
-            supplierEntity.setAddress_line_01(supplierDTO.getAddress_line_01());
-            supplierEntity.setAddress_line_02(supplierDTO.getAddress_line_02());
-            supplierEntity.setAddress_line_03(supplierDTO.getAddress_line_03());
-            supplierEntity.setAddress_line_04(supplierDTO.getAddress_line_04());
-            supplierEntity.setAddress_line_05(supplierDTO.getAddress_line_05());
-            supplierEntity.setAddress_line_06(supplierDTO.getAddress_line_06());
-            supplierEntity.setContact_no_01(supplierDTO.getContact_no_01());
-            supplierEntity.setContact_no_02(supplierDTO.getContact_no_02());
-            supplierEntity.setEmail(supplierDTO.getEmail());
-            supplierDAO.save(supplierEntity);
-            return true;
-        }
-        return false;
+    public List<SupplierDTO> getAllSuppliers() {
+        return mapping.toSupplierDTOList(supplierDAO.findAll());
     }
 
     @Override
-    public SupplierDTO selectSupplierById(String email) {
-        return null;
+    public boolean deleteSupplierByEmail(String email) {
+        Optional<SupplierEntity> supplier = supplierDAO.findByEmail(email);
+        if (supplier.isPresent()) {
+            supplierDAO.delete(supplier.get());
+            return true;
+        }else{
+            throw new RuntimeException(email+" not found (:");
+        }
+    }
+
+    @Override
+    public boolean updateSupplierById(String supplier_code, SupplierDTO supplierDTO) {
+        Optional<SupplierEntity> supplier = supplierDAO.findById(supplier_code);
+        if (supplier.isPresent()) {
+            supplierDAO.save(mapping.toSupplier(supplierDTO));
+            return true;
+        }else{
+            throw new RuntimeException(supplier_code+" not found (:");
+        }
+    }
+
+    @Override
+    public SupplierDTO selectSupplierByEmail(String email) {
+        Optional<SupplierEntity> supplier = supplierDAO.findByEmail(email);
+        if (supplier.isPresent()) {
+            return mapping.toSupplierDTO(supplier.get());
+        }else{
+            throw new RuntimeException(email+" not found (:");
+        }
     }
 
     @Override
     public String generateNextID() {
-        return null;
+        if (supplierDAO.findLastId() == null) {
+            return "S0001";
+        }
+        String numericPart = supplierDAO.findLastId().substring(1);
+        int lastNumericValue = Integer.parseInt(numericPart);
+        int nextNumericValue = lastNumericValue + 1;
+        String nextId = "S" + String.format("%04d", nextNumericValue);
+        return nextId;
     }
 
     @Override
     public List<String> getAllSupplierIds() {
-        return null;
+        return supplierDAO.getSupplierIds();
     }
 
-    @Override
-    public boolean deleteSupplier(String supplier_code) {
-        supplierDAO.deleteById(supplier_code);
-        return true;
-    }
 
-    @Override
-    public List<SupplierDTO> getAllSupplier() {
-        return mapping.toSupplierDTOList(supplierDAO.findAll());
-    }
 }

@@ -28,10 +28,10 @@ public class SaleEntity {
     @JoinColumn(name = "userId")
     private UserEntity userEntity;
 
-    @OneToMany(mappedBy = "sale_Entity", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL)
     private Set<SaleInventoryEntity> saleInventoryEntity = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "customer_code")
-    private CustomerEntity customerEntity;
+    private CustomerEntity customer;
 }

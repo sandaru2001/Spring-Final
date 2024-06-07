@@ -17,7 +17,7 @@ public class SupplierInventoryEntity {
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "item_code")
-    private InventoryEntity inventory_Entity;
+    private InventoryEntity inventory;
 
     @ManyToOne
     @JoinColumn(name = "supplier_id")

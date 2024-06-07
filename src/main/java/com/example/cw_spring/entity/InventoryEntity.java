@@ -28,13 +28,13 @@ public class InventoryEntity {
     private InventoryGender gender;
     private String occupation;
 
-    /*@JsonIgnore
+    @JsonIgnore
     @OneToMany(mappedBy = "inventory")
-    private Set<SaleInventoryEntity> saleInventoryEntity = new HashSet<>();*/
+    private Set<SaleInventoryEntity> saleInventoryEntity = new HashSet<>();
 
-    /*@JsonIgnore
+    @JsonIgnore
     @OneToMany(mappedBy = "inventory")
-    private Set<SupplierInventoryEntity> supplierInventoryEntity = new HashSet<>();*/
+    private Set<SupplierInventoryEntity> supplierInventoryEntity = new HashSet<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "inventory")

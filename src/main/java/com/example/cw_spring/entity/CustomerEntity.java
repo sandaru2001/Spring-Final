@@ -38,7 +38,7 @@ public class CustomerEntity implements SuperEntity{
     private String email;
     private String  purchase_date_time;
 
-@OneToMany(mappedBy = "customerEntity", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<SaleEntity> sales = new ArrayList<>();
 
 }

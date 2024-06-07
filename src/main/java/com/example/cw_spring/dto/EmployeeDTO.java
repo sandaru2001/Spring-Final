@@ -33,4 +33,5 @@ public class EmployeeDTO implements SuperDTO {
     private String email;
     private String in_case_of_emergency;
     private String emergency_contact_no;
+    private String password;
 }

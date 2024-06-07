@@ -19,12 +19,12 @@ public class SaleInventoryEntity {
     @JsonManagedReference
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "item_code")
-    private InventoryEntity inventory_Entity;
+    private InventoryEntity inventory;
 
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "order_id")
-    private SaleEntity sale_Entity;
+    private SaleEntity sale;
 
     private String item_name;
     private int quantity;

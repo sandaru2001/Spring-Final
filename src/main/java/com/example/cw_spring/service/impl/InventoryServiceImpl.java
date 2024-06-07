@@ -36,7 +36,7 @@ public class InventoryServiceImpl implements InventoryService {
         if(supplier.isPresent()){
             SupplierInventoryEntity supplierInventoryEntity = new SupplierInventoryEntity();
             supplierInventoryEntity.setSupplier_inventory_id(UUID.randomUUID().toString());
-            supplierInventoryEntity.setInventory_Entity(isSaved);
+            supplierInventoryEntity.setInventory(isSaved);
             supplierInventoryEntity.setSupplierEntity(supplier.get());
             supplierInventoryService.save(supplierInventoryEntity);
             return true;

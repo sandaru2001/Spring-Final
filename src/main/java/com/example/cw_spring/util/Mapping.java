@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 @Component
 @RequiredArgsConstructor
@@ -63,6 +64,32 @@ public class Mapping {
     }
     public List<InventoryDTO> toInventoryDTOList(List<InventoryEntity> inventories) {
         return mapper.map(inventories, List.class);
+    }
+
+    //
+    public SizeDTO toSizeDTO(SizeEntity size) {
+        return  mapper.map(size, SizeDTO.class);
+    }
+
+    public SizeEntity toSize(SizeDTO sizeDTO) {
+        return  mapper.map(sizeDTO, SizeEntity.class);
+    }
+
+    public List<SizeDTO> getSizeDTOList(List<SizeEntity> sizes) {
+        List<SizeDTO> dtos = new ArrayList<>();
+        for (SizeEntity size : sizes) {
+            SizeDTO sizeDTO = new SizeDTO();
+            sizeDTO.setSize(size.getSize());
+            sizeDTO.setQuantity(size.getQuantity());
+            sizeDTO.setUnit_price_sale(size.getUnit_price_sale());
+            sizeDTO.setUnit_price_buy(size.getUnit_price_buy());
+            sizeDTO.setExpected_profit(size.getExpected_profit());
+            sizeDTO.setProfit_margin(size.getProfit_margin());
+            sizeDTO.setItem_code(size.getInventory().getItem_code());
+            sizeDTO.setStatus(size.getStatus());
+            dtos.add(sizeDTO);
+        }
+        return dtos;
     }
 }
 

@@ -52,7 +52,7 @@ public class SaleServiceImpl implements SaleService {
         sale.setCashier_name(user.get().getEmployee().getEmployee_name());
 
         if (customer.isPresent()) {
-            sale.setCustomerEntity(customer.get());
+            sale.setCustomer(customer.get());
 
             if (placeOrderRequestDTO.getNet_total() > 800) {
                 sale.setAdded_points(1);
@@ -76,7 +76,7 @@ public class SaleServiceImpl implements SaleService {
 
             }
         } else {
-            sale.setCustomerEntity(null);
+            sale.setCustomer(null);
         }
 
         sale.setCustomer_name(placeOrderRequestDTO.getCustomer_name());
@@ -93,8 +93,8 @@ public class SaleServiceImpl implements SaleService {
 
             SaleInventoryEntity saleInventoryEntity = new SaleInventoryEntity();
             saleInventoryEntity.setOrder_Details_Id(UUID.randomUUID().toString());
-            saleInventoryEntity.setInventory_Entity(inventory);
-            saleInventoryEntity.setSale_Entity(savedSale);
+            saleInventoryEntity.setInventory(inventory);
+            saleInventoryEntity.setSale(savedSale);
             saleInventoryEntity.setItem_name(item.getItem_name());
             saleInventoryEntity.setQuantity(item.getQuantity());
             saleInventoryEntity.setSize(item.getItem_size());
@@ -106,7 +106,7 @@ public class SaleServiceImpl implements SaleService {
         saleInventoryDAO.saveAll(saleInventory);
 
         for (SaleInventoryEntity saleInventoryEntity : saleInventory) {
-            InventoryEntity inventory = saleInventoryEntity.getInventory_Entity();
+            InventoryEntity inventory = saleInventoryEntity.getInventory();
             int soldQuantity = saleInventoryEntity.getQuantity();
             int sizeToReduce = saleInventoryEntity.getSize();
 
@@ -120,7 +120,7 @@ public class SaleServiceImpl implements SaleService {
         }
 
         inventoryDAO.saveAll(saleInventory.stream()
-                .map(SaleInventoryEntity::getInventory_Entity)
+                .map(SaleInventoryEntity::getInventory)
                 .collect(Collectors.toSet()));
 
         return true;
